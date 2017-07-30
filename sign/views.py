@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from sign.models import Event ,Guest
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import render,get_object_or_404
+from django.views.decorators.csrf import csrf_protect
 
 
 # Create your views here.
@@ -66,6 +67,7 @@ def search_realname(request):
 def sign_index(request,event_id):
 	event =get_object_or_404(Event,id=event_id)
 	return render(request,"sign_index.html",{'event':event})
+@csrf_protect
 @login_required
 def sign_index_action(request,event_id):
 	event = get_object_or_404(Event,id=event_id)
