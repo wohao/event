@@ -92,7 +92,7 @@ def add_guest(request):
 
 	result = Event.objects.get(id =eid).status
 	if not result :
-		return JsonResponse('status':10023,'message':'event status is not available')
+		return JsonResponse({'status':10023,'message':'event status is not available'})
 
 	event_limit = Event.objects.get(id = eid).limit
 	guest_limit = Guest.objects.filter(event_id = eid)
@@ -114,7 +114,7 @@ def add_guest(request):
 	try :
 		Guest.objects.create(realname=realname,phone=int(phone),email=email,sign=0,event_id =int(eid))
 	except IntegrityError:
-		return JsonResponse({'status':10026，'message':'the event guest phone number repeat'})
+		return JsonResponse({'status':10026,'message':'the event guest phone number repeat'})
 
 	return JsonResponse({'status':200,'message':"add guest success"})
 
@@ -125,7 +125,7 @@ def get_guest_list(request):
 	phone = request.GET.get('phone','')
 
 	if eid == '':
-		return JsonResponse('status':10021,'message':'eid cannot be empty')
+		return JsonResponse({'status':10021,'message':'eid cannot be empty'})
 	if eid !='' and phone == '':
 
 		datas = []
@@ -138,7 +138,7 @@ def get_guest_list(request):
 				guest['email'] = r.email
 				guest['sign'] = r.sign
 				datas.append(guest)
-			retuen JsonResponse({'status':200,'message':'sucess','data':datas})
+			return JsonResponse({'status':200,'message':'sucess','data':datas})
 
 		else:
 			return JsonResponse({'status':10022,'message':'query result is empty'})
